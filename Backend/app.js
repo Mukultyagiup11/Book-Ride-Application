@@ -1,18 +1,23 @@
-const dotenv=require('dotenv');
+import  dotenv from 'dotenv';
 dotenv.config();
-const express=require('express');
-const cors=require('cors');
-const connectToDB=require('./db/utils/db');
+//const express=require('express');
+import express from 'express';
+//const cors=require('cors');
+import cors from 'cors';
+import {connectToDB} from './db/utils/db.js';
+import router from './routes/user.route.js';
 const app=express();
 app.use(cors());
 connectToDB();
-
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 
 app.get('/',(req,res)=>{
     res.send(`Hello World`);
 })
 
-module.exports={
-    app
+app.use('/rideApp/v1',router);
 
+export default {
+  app
 }

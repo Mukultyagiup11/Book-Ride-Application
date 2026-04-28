@@ -1,5 +1,6 @@
-const http=require('https');
-const app=require('./app');
+import express from 'express';
+import app from './app.js'
+import http from 'https';
 const PORT=process.env.PORT||3000;
 
 const server=http.createServer(app);

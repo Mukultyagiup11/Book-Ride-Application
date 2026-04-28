@@ -1,4 +1,4 @@
-const userModel = require("../../models/user.model");
+import userModel from "../../models/user.model.js";
 
 export const createUserQuery=async(firstName,lastName,email,password)=>{
        return await userModel.create({
@@ -11,6 +11,6 @@ export const createUserQuery=async(firstName,lastName,email,password)=>{
        });
 }
 
-module.exports={
+export default {
     createUserQuery
 }

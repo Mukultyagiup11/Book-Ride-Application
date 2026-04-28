@@ -1,35 +1,43 @@
-const userModel=require('../models/user.model');
-import {createUserQuery} from '../db/queries/user.queries';
+import { User } from '../models/user.model.js';
+import { createUserQuery } from '../db/queries/user.queries.js';
 
-export const registerUserService=async(data)=>{
-    const {firstName,lastName,email,password}=data;
+const registerUserService = async (data) => {
+  const { fullName, email, password } = data;
 
-    if(!firstName||!email||!password){
-        return {
-            success:false,
-            message:`firstName,email and Password are required.`
-        }
-    }
-    
-    try {
-       const user=await createUserQuery(firstName,lastName,email,password);
-       return {
-        success:true,
-        data:user
-       }
-       
-    } catch (error) {
-        console.log('Internal Server Error...');
-        return {
-            success:false,
-            error:error.message,
-            message:'Internal Server Error'
-        }
-    }
+  if (!fullName || !email || !password) {
+    return {
+      success: false,
+      message: 'fullName, email and password are required.'
+    };
+  }
 
-}
+  try {
+    const hashedPassword = await User.hashPassword(password);
+    console.log(hashedPassword);
+    const user = await createUserQuery(
+      fullName.firstName,
+      fullName.lastName,
+      email,
+      hashedPassword
+    );
+    const token=await user.generateAuthToken();
+    console.log(token);
+    return {
+      success: true,
+      data: user,
+      Token:token
+    };
 
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+      message: 'Internal Server Error',
+      error: error.message
+    };
+  }
+};
 
-module.exports={
+export default {
     registerUserService
 }
