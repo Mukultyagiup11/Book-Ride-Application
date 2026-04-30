@@ -1,7 +1,7 @@
-import userModel from "../../models/user.model.js";
+import {User} from "../../models/user.model.js";
 
 export const createUserQuery=async(firstName,lastName,email,password)=>{
-       return await userModel.create({
+       return await User.create({
         fullName:{
             firstName,
             lastName
@@ -11,6 +11,11 @@ export const createUserQuery=async(firstName,lastName,email,password)=>{
        });
 }
 
+export const findUserQuery=async(email,password)=>{
+    return await User.findOne({email}).select(`+password`);
+}
+
 export default {
-    createUserQuery
+    createUserQuery,
+    findUserQuery
 }

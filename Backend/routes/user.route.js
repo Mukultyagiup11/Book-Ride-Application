@@ -14,8 +14,11 @@ import userController from '../controller/user.controller.js';
 // })
 
 router.post('/operation/register',async(req,res)=>{
-    return await  userController.registerUser(req,res);
+    return await userController.registerUser(req,res);
 });
 
+router.post('/operation/login',async(req,res)=>{
+    return await userController.loginUserContoller(req,res);
+});
 
 export default router;

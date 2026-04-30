@@ -1,4 +1,4 @@
-const validateRequest=async(req,res)=>{
+export const validateRequest=async(req,res)=>{
    if(req.headers["content-type"]!=="application/json"){
       res.status(400).send({
         error:'Content-Type must be application/json'
@@ -22,7 +22,7 @@ const validateRequest=async(req,res)=>{
 }
 
 
-const validateFormRequest=async(req,res)=>{
+export const validateFormRequest=async(req,res)=>{
   if(!req.headers["content-type"]?.includes("multipart/form-data")){
       res.status(400).send({error:"Content-Type must be multipart/form-data"});
       };

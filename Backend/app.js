@@ -18,6 +18,4 @@ app.get('/',(req,res)=>{
 
 app.use('/rideApp/v1',router);
 
-export default {
-  app
-}
+export default app;
