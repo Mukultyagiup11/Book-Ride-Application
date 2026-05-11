@@ -1,5 +1,6 @@
 import {User}  from '../models/user.model.js';
 import { createUserQuery,findUserQuery } from '../db/queries/user.queries.js';
+import blacklistTokenModel from '../models/blacklistToken.model.js';
 
 const registerUserService = async (data) => {
   const { fullName, email, password } = data;
@@ -26,7 +27,7 @@ const registerUserService = async (data) => {
     return {
       success: true,
       data: user,
-      Token:token
+      token:token
     };
 
   } catch (error) {
@@ -64,12 +65,12 @@ const registerUserService = async (data) => {
         message:'Invalid email and password'
       }
     }
-    const token=await user.generateAuthToken();
+    const token=user.generateAuthToken();
     return{
       success:true,
       message:'User logged In Successfully.',
       user,
-      Token:token
+      token:token
     }
   } catch (error) {
     console.log(`Internal Server Error`);
@@ -80,7 +81,34 @@ const registerUserService = async (data) => {
 }
 }
 
+export const logoutService=async(data)=>{
+  const {token}=data;
+  if(!token){
+    return {
+      success:false,
+      message:`Token rerquired for logout session.`
+    }
+  }
+
+  try {
+      const token=res.cookies.token|| res.headers.authorization.split(' ')[1];
+      await blacklistTokenModel.create({token});
+     return {
+      success:true,
+      message:'LoggedOut'
+     }
+  } catch (error) {
+    console.log('Internal Server Error.');
+    return{
+      success:false,
+      message:`Internal server error.`
+    }
+  }
+
+}
+
 export default {
     registerUserService,
-    loginUserService
+    loginUserService,
+     logoutService
 }

@@ -50,6 +50,4 @@ userSchema.statics.hashPassword = async function (password) {
 
 export const User= mongoose.model('User', userSchema);
 
-export default {
-  User
-}
+export default User;
