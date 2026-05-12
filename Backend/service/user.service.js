@@ -81,34 +81,33 @@ const registerUserService = async (data) => {
 }
 }
 
-export const logoutService=async(data)=>{
-  const {token}=data;
-  if(!token){
+export const getLogoutService=async(data)=>{
+   const {token}=data;
+   if(!token){
     return {
       success:false,
-      message:`Token rerquired for logout session.`
+      message:`Token required.`
     }
-  }
+   }
+   try {
 
-  try {
-      const token=res.cookies.token|| res.headers.authorization.split(' ')[1];
-      await blacklistTokenModel.create({token});
-     return {
+    await blacklistTokenModel.create({token});
+    return{
       success:true,
-      message:'LoggedOut'
-     }
-  } catch (error) {
-    console.log('Internal Server Error.');
+      message:'Logged-Out'
+    }
+       
+   } catch (error) {
+    console.log(`Internal Server Error.`);
     return{
       success:false,
-      message:`Internal server error.`
+      message:`Internal Server Error.`
     }
-  }
-
+   }
 }
 
 export default {
     registerUserService,
     loginUserService,
-     logoutService
+    getLogoutService
 }

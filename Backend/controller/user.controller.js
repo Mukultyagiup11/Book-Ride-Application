@@ -44,21 +44,26 @@ export const getUserProfile=async(req,res)=>{
     
    await res.status(200).send(req.user);
 }
-
-export const logoutUserController=async(req,res,next)=>{
+  
+export const  getLogoutController=async(req,res,next)=>{
     try {
-        res.clearCookie('token');
-        const token=req.cookies.token||req.headers.authorization.split(' ')[1];
-        if(!token)return;
-        const result=await userService.logoutService(token);
-        return res.status(200).send(result);
-
-    } catch (error) {
-        console.log('Error in logout session.');
+       const token=req.cookies.token||req.headers.authorization?.split(' ')[1];
+      if(!token){
         return{
             success:false,
-            message:'Error in logout session.'
+            message:`Unauthorized`
         }
+      }
+       res.clearCookie('token');
+       const result=await userService.getLogoutService({token});
+       return res.status(200).send(result);
+    } catch (error) {
+        console.log(`Error in logging out session.`);
+        return{
+            success:false,
+            message:`Error in logging out session.`
+        }
+
     }
 }
 
@@ -66,6 +71,6 @@ export default {
     registerUser,
   loginUserContoller,
   getUserProfile,
-  logoutUserController
+ getLogoutController
 }
 

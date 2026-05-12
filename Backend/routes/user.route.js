@@ -27,8 +27,8 @@ router.post('/operation/userProfile',authMiddlewares.authUser,async(req,res,next
     return await userController.getUserProfile(req,res,next);
 });
 
-router.post('/operations/logout',authMiddlewares.authUser,async(req,res,next)=>{
-    return await userController.logoutUserController(req,res,next);
+router.post('/operation/logout',authMiddlewares.authUser,async(req,res,next)=>{
+    return await userController.getLogoutController(req,res,next);
 })
 
 export default router;
